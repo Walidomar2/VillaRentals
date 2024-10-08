@@ -41,7 +41,7 @@ namespace VillaRentals.Web.Controllers
         {
             var villa = _context.Villas.FirstOrDefault(v => v.Id == villaId);
 
-            if (villa == null)
+            if (villa is null)
             {
                 return RedirectToAction("Error", "Home");
             }
@@ -61,5 +61,32 @@ namespace VillaRentals.Web.Controllers
             }
             return View();
         }
+
+        public IActionResult Delete(int villaId)
+        {
+            var villa = _context.Villas.FirstOrDefault(v => v.Id == villaId);
+
+            if (villa is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View(villa);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Villa obj)
+        {
+            var objFromDb = _context.Villas.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb is not null)
+            {
+                _context.Villas.Remove(objFromDb);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+
     }
 }
