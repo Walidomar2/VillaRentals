@@ -17,5 +17,10 @@ namespace VillaRentals.Web.Controllers
 
             return View(villas);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
