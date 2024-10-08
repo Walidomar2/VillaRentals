@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using VillaRentals.Domain.Entities;
 using VillaRentals.Infrastructure.Data;
 
 namespace VillaRentals.Web.Controllers
@@ -20,6 +21,44 @@ namespace VillaRentals.Web.Controllers
 
         public IActionResult Create()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Villa obj)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _context.Villas.Add(obj);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        public IActionResult Update(int villaId)
+        {
+            var villa = _context.Villas.FirstOrDefault(v => v.Id == villaId);
+
+            if (villa == null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View(villa);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Villa obj)
+        {
+
+            if (ModelState.IsValid && obj.Id > 0)
+            {
+                _context.Villas.Update(obj);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
